@@ -2,13 +2,14 @@ require 'spec_helper'
 
 describe Chat do
   it 'has an owner' do
-    owner = double 'dude'
+    owner = stub_model(User)
     chat = Chat.new owner: owner
     chat.owner.should eq owner
   end
 
   it 'has a unique identifier' do
     chat = Chat.new
+    chat.save
     chat.id.should_not be_nil
   end
 

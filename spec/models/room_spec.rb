@@ -7,7 +7,7 @@ describe Room do
   end
 
   it 'belongs to a chat' do
-    chat = double
+    chat = stub_model(Chat)
     room = Room.new chat: chat
     room.chat.should == chat
   end
@@ -19,18 +19,18 @@ describe Room do
 
   it 'lets users to join' do
     room = Room.new
-    dude = double 'dude'
+    dude = stub_model(User)
     room.join dude
-    room.participants.should include(dude)
-    room.participants.size.should == 1
+    room.users.should include(dude)
+    room.users.size.should == 1
   end
 
   it 'kicks users out' do
     room = Room.new
-    dude = double 'dude'
+    dude = stub_model(User)
     room.join dude
     room.kick dude
-    room.participants.should be_empty
+    room.users.should be_empty
   end
 
   it 'wont join the user if the room is closed' do

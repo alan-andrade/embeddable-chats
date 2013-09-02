@@ -1,10 +1,5 @@
-class Message
-  attr_reader :room, :body, :sender
-
-  def initialize attributes={}
-    @room = attributes[:room]
-    @body = attributes[:body]
-    @sender = attributes[:sender]
-  end
+class Message < ActiveRecord::Base
+  belongs_to :room
+  belongs_to :sender, class_name: 'User'
 end
 

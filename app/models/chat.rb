@@ -1,17 +1,11 @@
-require 'securerandom'
-
-class Chat
-  attr_reader :owner, :id
-
-  def initialize options={}
-    @id = SecureRandom.urlsafe_base64
-    @owner = options[:owner]
-  end
+class Chat < ActiveRecord::Base
+  belongs_to :owner, class_name: 'User'
+  has_many :rooms
 
   def open_room
-    r = Room.new
-    rooms << r
-    r
+    save unless persisted?
+    room = rooms.create
+    room
   end
 
   def close_room room
@@ -20,7 +14,4 @@ class Chat
     end
   end
 
-  def rooms
-    @rooms ||= []
-  end
 end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Message do
-  let(:room) { double 'room' }
+  let(:room) { stub_model Room }
 
   it 'belongs to a room' do
     message = Message.new room: room
@@ -14,7 +14,7 @@ describe Message do
   end
 
   it 'has a sender' do
-    sender = double 'dude'
+    sender = stub_model(User)
     message = Message.new sender: sender
     message.sender.should == sender
   end

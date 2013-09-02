@@ -1,43 +1,35 @@
-class Room
+class Room < ActiveRecord::Base
   class ClosedError < StandardError
     def initialize
       @message = "Tried to join a participant while closed"
     end
   end
 
-  attr_reader :subject, :chat
-
-  def initialize attributes={}
-    @open = true
-    @subject = attributes[:subject]
-    @chat = attributes[:chat]
-  end
-
-  def open?
-    @open
-  end
+  belongs_to :chat
+  has_many :room_participations
+  has_many :users, through: :room_participations
 
   def join user
     if closed?
       raise ClosedError
     end
-    participants << user
+    users << user
   end
 
   def kick user
-    participants.delete user
-  end
-
-  def participants
-    @participants ||= []
+    users.destroy user
   end
 
   def close
-    @open = false
+    update_attributes is_open: false
   end
 
   def closed?
-    !@open
+    !is_open?
+  end
+
+  def open?
+    is_open?
   end
 
 end
