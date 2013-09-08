@@ -8,6 +8,7 @@ class Room < ActiveRecord::Base
   belongs_to :chat
   has_many :room_participations
   has_many :users, through: :room_participations
+  has_many :messages
 
   delegate :include?, :size, :empty?, to: :users
 

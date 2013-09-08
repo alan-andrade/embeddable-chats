@@ -21,6 +21,8 @@ class RoomsController < ApplicationController
   def show
     @room = Room.includes(:users).find params[:id]
     @room.join current_user unless @room.include? current_user
+
+    @messages = @room.messages
   end
 
   def update

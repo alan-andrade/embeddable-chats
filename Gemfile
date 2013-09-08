@@ -10,11 +10,14 @@ gem 'omniauth', '1.1.4'
 gem 'omniauth-facebook', '1.4.1'
 gem 'haml-rails'
 gem 'squeel'
-gem 'pry'
-gem 'pry-nav'
-gem 'database_cleaner'
 gem 'guard-rspec'
+gem 'zeus'
 
 group :test do
   gem 'rspec-rails'
+  gem 'pry'
+  gem 'pry-nav'
+  gem 'database_cleaner'
+  gem 'capybara', '2.1.0'
+  gem 'factory_girl', '4.2.0'
 end

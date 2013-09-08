@@ -2,7 +2,16 @@
 
 %h2 Talking about #{@room.subject}
 
-%p People
+%h3 People
 %ul
   - @room.users.each do |user|
-    = user.email
+    %li= user.email
+
+%h3 Messages
+- @messages.each do |message|
+  %p= message.body
+
+
+= form_for [@room, Message.new] do |f|
+  = f.text_field :body
+  = f.submit 'Send'

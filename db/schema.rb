@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130903031838) do
+ActiveRecord::Schema.define(version: 20130908061112) do
 
   create_table "authorizations", force: true do |t|
     t.string   "provider"
@@ -26,9 +26,11 @@ ActiveRecord::Schema.define(version: 20130903031838) do
   end
 
   create_table "messages", force: true do |t|
-    t.integer "room_id"
-    t.integer "sender_id"
-    t.string  "body",      default: ""
+    t.integer  "room_id"
+    t.integer  "sender_id"
+    t.string   "body",       default: ""
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "messages", ["room_id"], name: "index_messages_on_room_id"
