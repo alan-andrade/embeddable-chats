@@ -13,6 +13,7 @@ gem 'squeel'
 gem 'pry'
 gem 'pry-nav'
 gem 'database_cleaner'
+gem 'guard-rspec'
 
 group :test do
   gem 'rspec-rails'
