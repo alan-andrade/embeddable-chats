@@ -1,0 +1,12 @@
+%h1= @user.email
+
+- if @user.chat.rooms.any?
+  %ul
+    - @user.chat.rooms.each do |r|
+      %li
+        = r.subject
+        = link_to 'Edit', edit_room_path(r)
+
+%p
+  Create your first chat room
+  = link_to "Here", new_room_path

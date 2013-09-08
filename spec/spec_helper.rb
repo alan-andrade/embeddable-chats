@@ -10,7 +10,7 @@ ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = true
-  config.infer_base_class_for_anonymous_controllers = false
+  config.infer_base_class_for_anonymous_controllers = true
   config.order = "random"
   config.before(:each) { DatabaseCleaner.start }
   config.after(:each)  { DatabaseCleaner.clean }

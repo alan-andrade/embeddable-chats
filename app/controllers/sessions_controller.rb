@@ -4,11 +4,18 @@ class SessionsController < ApplicationController
       Authorization.find_from_auth_hash(auth_hash) ||
       Authorization.create_from_auth_hash(auth_hash)
 
-    current_user = auth.user
-    render text: "Welcome, #{current_user.email}"
+    authenticate auth.user
+    redirect_to dashboard_path
   end
 
   def auth_hash
     request.env['omniauth.auth']
+  end
+
+  private
+
+  def authenticate user
+    session[:user_id] = user.id
+    @current_user = user
   end
 end
