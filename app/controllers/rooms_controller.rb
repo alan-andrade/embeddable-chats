@@ -18,6 +18,11 @@ class RoomsController < ApplicationController
     @room = Room.find params[:id]
   end
 
+  def show
+    @room = Room.includes(:users).find params[:id]
+    @room.join current_user unless @room.include? current_user
+  end
+
   def update
     @room = chat.rooms.find params[:id]
     if @room && @room.update_attributes(params_for_update)
@@ -28,6 +33,11 @@ class RoomsController < ApplicationController
   end
 
   private
+
+  def requires_authentication
+    session[:room_id] = params[:id].to_i if params[:action] == 'show'
+    super # Call the main ApplucationController requires_authentication
+  end
 
   def params_for_create
     params.
@@ -41,3 +51,9 @@ class RoomsController < ApplicationController
     current_user.chat
   end
 end
+
+# iframe with /rooms/2
+#
+# no session detected         # store room id
+#   ask to authenticate       # create/log user in
+#   once authenticated, join  # verify participation

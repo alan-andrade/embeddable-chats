@@ -4,19 +4,19 @@ describe Chat do
   it 'has an owner' do
     owner = stub_model(User)
     chat = Chat.new owner: owner
-    chat.owner.should eq owner
+    expect(chat.owner).to equal owner
   end
 
   it 'has a unique identifier' do
     chat = Chat.new
     chat.save
-    chat.id.should_not be_nil
+    expect(chat.id).not_to be_nil
   end
 
   it 'opens rooms' do
     chat = Chat.new
     chat.open_room
-    chat.rooms.size.should == 1
+    expect(chat.rooms.size).to eq 1
   end
 
   it 'closes rooms' do

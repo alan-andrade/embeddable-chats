@@ -10,7 +10,7 @@ describe SessionsController do
 
     get :create, provider: 'facebook'
 
-    Authorization.count.should == 1
-    User.count.should == 1
+    expect(Authorization.count).to eq 1
+    expect(User.count).to eq 1
   end
 end

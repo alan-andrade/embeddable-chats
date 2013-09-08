@@ -2,10 +2,11 @@
 
 - if @user.chat.rooms.any?
   %ul
-    - @user.chat.rooms.each do |r|
+    - @user.chat.rooms.each do |room|
       %li
-        = r.subject
-        = link_to 'Edit', edit_room_path(r)
+        = room.subject
+        = link_to 'Edit', edit_room_path(room)
+        = link_to 'Show', room
 
 %p
   Create your first chat room

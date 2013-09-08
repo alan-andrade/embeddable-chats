@@ -10,7 +10,7 @@ describe ApplicationController do
 
     it 'redirects to root_path if no authenticated user' do
       get :index
-      response.should redirect_to(root_path)
+      expect(response).to redirect_to(root_path)
     end
   end
 

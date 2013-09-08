@@ -1,0 +1,8 @@
+%h1 Room
+
+%h2 Talking about #{@room.subject}
+
+%p People
+%ul
+  - @room.users.each do |user|
+    = user.email

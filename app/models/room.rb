@@ -9,6 +9,8 @@ class Room < ActiveRecord::Base
   has_many :room_participations
   has_many :users, through: :room_participations
 
+  delegate :include?, :size, :empty?, to: :users
+
   def join user
     if closed?
       raise ClosedError
