@@ -17,7 +17,15 @@ group :test do
   gem 'rspec-rails'
   gem 'pry'
   gem 'pry-nav'
-  gem 'database_cleaner'
+  # Use again when we switch to a serius db.
+  # gem 'database_cleaner', '1.1.0'
   gem 'capybara', '2.1.0'
   gem 'factory_girl', '4.2.0'
+  gem 'timecop'
+  gem 'poltergeist'
+end
+
+group :development, :test do
+  gem 'teaspoon'
+  gem 'guard-teaspoon'
 end

@@ -1,4 +1,4 @@
-guard :rspec, cli: '--color -f doc', zeus: true do
+guard :rspec, zeus: true do
   watch(%r{^spec/.+_spec\.rb$})
   watch(%r{^lib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
@@ -18,3 +18,11 @@ guard :rspec, cli: '--color -f doc', zeus: true do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
+
+guard :teaspoon do
+  # Implementation files
+  watch(%r{app/assets/javascripts/(.+).js}) { |m| "#{m[1]}_spec" }
+
+  # Specs / Helpers
+  watch(%r{spec/javascripts/(.*)})
+end
