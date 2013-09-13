@@ -25,7 +25,9 @@ group :test do
   gem 'poltergeist'
 end
 
+
 group :development, :test do
   gem 'teaspoon'
   gem 'guard-teaspoon'
+  gem 'sinonjs-rails'
 end

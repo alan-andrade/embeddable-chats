@@ -23,3 +23,5 @@
 //
 // You can require javascript files here. A good place to start is by requiring your application.js.
 //= require application
+//= require sinon/sinon-1.5.0
+//= require sinon/adapter/sinon-qunit-1.0.0
