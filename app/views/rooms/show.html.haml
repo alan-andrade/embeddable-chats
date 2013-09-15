@@ -3,6 +3,7 @@
     $(function () {
       var feed = new MessagesFeed();
       feed.room_id = "#{params[:id]}";
+      feed.pollTimeout = "#{Rails.env.test? ? 50 : 2000}";
 
       var feedView = new FeedView( {collection: feed} );
       feedView.setElement('#feed');
