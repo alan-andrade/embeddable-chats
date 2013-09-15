@@ -21,7 +21,7 @@ group :backend do
 end
 
 group :frontend do
-  guard :teaspoon do
+  guard :teaspoon, formatters: 'dot' do
     watch(%r{^app/assets/javascripts/(.+).js}) { |m| "#{m[1]}_spec" }
     watch(%r{^spec/javascripts/(.*)})
   end

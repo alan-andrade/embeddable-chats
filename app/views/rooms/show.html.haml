@@ -1,3 +1,18 @@
+= content_for :js do
+  :javascript
+    $(function () {
+      var feed = new MessagesFeed();
+      feed.room_id = "#{params[:id]}";
+
+      var feedView = new FeedView( {collection: feed} );
+      feedView.setElement('#feed');
+
+      feed.start();
+
+      // export the feed
+      window.feed = feed;
+    });
+
 %h1 Room
 
 %h2 Talking about #{@room.subject}
@@ -8,9 +23,9 @@
     %li= user.email
 
 %h3 Messages
-- @messages.each do |message|
-  %p= message.body
-
+#feed
+  - @messages.each do |message|
+    %p= message.body
 
 = form_for [@room, Message.new] do |f|
   = f.text_field :body

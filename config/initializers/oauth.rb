@@ -1,5 +1,5 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET'],
+  provider :facebook, '525110200893323', '42ee4b1360914e8617cbd059816f0657',
            scope: 'email', display: 'page'
 
   on_failure do

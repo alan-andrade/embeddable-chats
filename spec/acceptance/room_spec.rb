@@ -30,10 +30,8 @@ feature 'Chat rooms' do
 
     scenario 'can read a live stream of messages', js: true do
       visit room_path room
-      room.messages.create body: 'live message'
-      Timecop.travel Time.now + 5.seconds do
-        expect(page.body).to match 'live message'
-      end
+      room.messages.create body: 'bulldog'
+      expect(page).to have_text 'bulldog'
     end
   end
 

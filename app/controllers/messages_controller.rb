@@ -1,5 +1,16 @@
 class MessagesController < ApplicationController
   before_filter :requires_authentication
+  respond_to :json, :html
+
+  def index
+    room = Room.find params[:room_id]
+    @messages = room.messages
+    respond_with @messages do |format|
+      format.json do
+        render json: @messages.map{|m| { id: m.id, body: m.body } }.to_json
+      end
+    end
+  end
 
   def create
     @room = Room.find params[:room_id]

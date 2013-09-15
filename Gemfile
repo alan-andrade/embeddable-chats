@@ -21,13 +21,12 @@ group :test do
   # gem 'database_cleaner', '1.1.0'
   gem 'capybara', '2.1.0'
   gem 'factory_girl', '4.2.0'
-  gem 'timecop'
   gem 'poltergeist'
 end
 
 
 group :development, :test do
-  gem 'teaspoon'
-  gem 'guard-teaspoon'
+  gem 'teaspoon', '0.7.6'
+  gem 'guard-teaspoon', '0.0.4'
   gem 'sinonjs-rails'
 end
