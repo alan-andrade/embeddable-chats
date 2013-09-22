@@ -5,8 +5,15 @@
       feed.room_id = "#{params[:id]}";
       feed.pollTimeout = "#{Rails.env.test? ? 50 : 2000}";
 
+      $('#stop-polling').click(function ( e ) {
+        e.preventDefault();
+        feed.stop();
+      });
+
       var feedView = new FeedView( {collection: feed} );
       feedView.setElement('#feed');
+
+      var messageForm = new MessageForm( {el: '#message-form'} );
 
       feed.start();
 
@@ -23,11 +30,13 @@
   - @room.users.each do |user|
     %li= user.email
 
+= link_to 'Stop Polling', '#', id: 'stop-polling'
 %h3 Messages
 #feed
   - @messages.each do |message|
     %p= message.body
 
-= form_for [@room, Message.new] do |f|
+
+= form_for [@room, Message.new], html: { id: 'message-form' } do |f|
   = f.text_field :body
   = f.submit 'Send'

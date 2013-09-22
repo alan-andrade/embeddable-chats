@@ -1,12 +1,20 @@
 var MessageView = Backbone.View.extend({
   className: 'message',
-  template: _.template("<%= body %>"),
+  template: _.template("<li data-created_at='<%= created_at %>'><%= body %></li>"),
   render: function () {
     return this.$el.html(this.template(this.model.attributes))
   }
 });
 
+var Message = Backbone.Model.extend({
+  url: '/rooms/1/messages',
+  defaults: {
+    created_at: ''
+  }
+});
+
 var MessagesFeed = Backbone.Collection.extend({
+  model: Message,
   url: function () {
     return '/rooms/' + this.room_id + '/feed.json';
   },
@@ -38,10 +46,6 @@ var FeedView = Backbone.View.extend({
       this.$el.append(messageView.render());
     }, this);
   }
-});
-
-var Message = Backbone.Model.extend({
-  url: '/rooms/1/messages'
 });
 
 var MessageForm = Backbone.View.extend({

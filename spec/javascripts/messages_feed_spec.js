@@ -38,7 +38,7 @@ asyncTest('appends received messages', 2, function () {
   feed.start();
 });
 
-asyncTest('persists a new message', function () {
+asyncTest('persists a new message in the server', function () {
   expect( 1 );
   this.server.respondWith('POST', '/rooms/1/messages', [ 200,
                             { 'Content-Type': 'application/json' },
@@ -55,7 +55,7 @@ asyncTest('persists a new message', function () {
   }, 10);
 });
 
-module( 'Message View', {
+module( 'Message Form', {
   setup: function () {
     fixture.set( '<form id="test-form" action="/">' +
                    '<input type="text"></input>' +
@@ -65,7 +65,7 @@ module( 'Message View', {
   teardown: function () { fixture.cleanup(); }
 });
 
-asyncTest('It prevents regular form behavior', function () {
+asyncTest('It attaches to a form and prevents its default behavior', function () {
   expect( 1 );
 
   // Depends on what handler gets binded first.
@@ -81,7 +81,7 @@ asyncTest('It prevents regular form behavior', function () {
 });
 
 
-asyncTest('It creates a new message', function () {
+asyncTest('It posts message to the server', function () {
   expect( 2 );
 
   Backbone.sync = function ( method, model, options ) {
@@ -93,4 +93,20 @@ asyncTest('It creates a new message', function () {
   var messageForm = new MessageForm( {el: '#test-form'} );
   messageForm.setBody('more coffee');
   messageForm.submit();
+});
+
+
+module( 'Message View' );
+
+test( 'renders the message creation date in a data attribute', function () {
+  var time = ( new Date() ).toJSON();
+  var message = new Message({
+    body: 'Tester'
+    , created_at: time
+  });
+  var messageView = new MessageView( { model: message } );
+
+  var rendered = messageView.render();
+  ok(rendered.html().match(time),
+     'Message view is not rendering the date in the element');
 });
