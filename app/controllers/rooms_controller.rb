@@ -22,7 +22,7 @@ class RoomsController < ApplicationController
     @room = Room.includes(:users).find params[:id]
     @room.join current_user unless @room.include? current_user
 
-    @messages = @room.messages
+    @messages = @room.messages.recent
   end
 
   def update

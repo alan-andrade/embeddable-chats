@@ -1,7 +1,7 @@
 EmbeddableChats::Application.routes.draw do
   root to: 'home#index'
   resources :rooms do
-    resources :messages, only: [:create]
+    resources :messages, only: [:create, :show]
     get 'feed', to: 'messages#index'
   end
 

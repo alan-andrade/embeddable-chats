@@ -9,7 +9,7 @@ module('Messages Feed', {
   }
 });
 
-test('polls every 2 seconds', function () {
+test( 'polls every 2 seconds', function () {
   var clock = this.sandbox.useFakeTimers();
   var feed = new MessagesFeed();
   feed.start();
@@ -18,27 +18,46 @@ test('polls every 2 seconds', function () {
   clock.restore();
 });
 
-asyncTest('appends received messages', 2, function () {
-  var feed = new MessagesFeed();
-  var feedView = new FeedView( {collection: feed} );
+test( 'limits each request by a date', function () {
+  sinon.spy( Backbone, 'sync' );
 
-  this.server.respondWith('/rooms/1/feed.json', [ 200,
-                            { 'Content-Type': 'application/json' },
-                            '[{"id": 1, "body": "Hey there" }]'
-                          ]);
+  var feed = new MessagesFeed();
+
+  feed.fetch();
+
+  var request = Backbone.sync.getCall( 0 );
+  var params = request.args[2].data;
+
+  ok( !!params.created_at, 'Requests are not being trimmed by date' );
+});
+
+asyncTest( 'appends received messages', function () {
+  expect( 2 );
+  var feed = new MessagesFeed();
+  var feedView = new FeedView({ collection: feed });
+
+  var response = [{ id: 5,
+    body: 'fake plastic servers',
+    created_at: new Date()
+  }];
+
+  this.server.respondWith( JSON.stringify(response) );
 
   feed.room_id = 1;
 
   setTimeout(function () {
-    equal(feed.length, 1, 'populates the collection');
-    equal(feedView.$('.message').text(), 'Hey there', 'Feed should insert messages in DOM');
+    equal( feed.length, 1, 'populates the collection' );
+    equal( feedView.$('.message').text(),
+          'fake plastic servers',
+          'Feed should insert messages in DOM');
     feed.stop();
     start();
-  }, 100);
+  }, 500);
+
   feed.start();
 });
 
-asyncTest('persists a new message in the server', function () {
+asyncTest( 'persists a new message in the server', function () {
   expect( 1 );
   this.server.respondWith('POST', '/rooms/1/messages', [ 200,
                             { 'Content-Type': 'application/json' },

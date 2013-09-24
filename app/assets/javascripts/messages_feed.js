@@ -7,14 +7,14 @@ var MessageView = Backbone.View.extend({
 });
 
 var Message = Backbone.Model.extend({
-  url: '/rooms/1/messages',
-  defaults: {
-    created_at: ''
-  }
+  url: '/rooms/1/messages'
 });
 
 var MessagesFeed = Backbone.Collection.extend({
   model: Message,
+  initialize: function () {
+    this.startTime = new Date().toJSON();
+  },
   url: function () {
     return '/rooms/' + this.room_id + '/feed.json';
   },
@@ -23,26 +23,40 @@ var MessagesFeed = Backbone.Collection.extend({
   getPollCount: function () { return this.pollCount; },
   increasePollCount: function () { this.pollCount++; },
   start: function () {
+    this.on('add', this.updateStartTime);
+
     this.fetch();
     this.increasePollCount();
+
     var self = this;
     this.pollInterval = setInterval(function () {
                           self.fetch();
                           self.increasePollCount();
                         }, this.pollTimeout);
   },
+  fetch: function () {
+    var params = { created_at: this.startTime }
+
+    Backbone.Collection.prototype.fetch.call(
+      this,
+      { data: params }
+    );
+  },
   stop: function () {
-    clearInterval(this.pollInterval);
+    clearInterval( this.pollInterval );
+  },
+  updateStartTime: function () {
+    this.startTime = new Date().toJSON();
   }
 });
 
 var FeedView = Backbone.View.extend({
   initialize: function() {
-    this.listenTo(this.collection, 'sync', this.render);
+    this.collection.on('add', this.render, this);
   },
   render: function () {
     this.collection.each(function (message) {
-      var messageView = new MessageView( {model: message} );
+      var messageView = new MessageView({ model: message });
       this.$el.append(messageView.render());
     }, this);
   }
@@ -56,6 +70,10 @@ var MessageForm = Backbone.View.extend({
         e.preventDefault();
       });
     }
+  },
+
+  events: {
+    'submit': 'submit'
   },
 
   '$body': function () { return this.$('input[type="text"]') },
@@ -74,6 +92,11 @@ var MessageForm = Backbone.View.extend({
 
   submit: function () {
     var message = new Message( {body: this.$body().val()} );
-    message.save();
+    var self = this;
+    message.save({}, {
+      success: function () {
+        self.$body().val('');
+      }
+    });
   }
 });

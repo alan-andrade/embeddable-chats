@@ -10,14 +10,15 @@
         feed.stop();
       });
 
+      feed.reset(#{@messages.map{|m| {id: m.id, body: m.body,created_at: m.created_at} }.to_json });
+
       var feedView = new FeedView( {collection: feed} );
       feedView.setElement('#feed');
+      feedView.render();
 
       var messageForm = new MessageForm( {el: '#message-form'} );
 
       feed.start();
-
-      // export the feed
       window.feed = feed;
     });
 
@@ -31,10 +32,10 @@
     %li= user.email
 
 = link_to 'Stop Polling', '#', id: 'stop-polling'
+
 %h3 Messages
+
 #feed
-  - @messages.each do |message|
-    %p= message.body
 
 
 = form_for [@room, Message.new], html: { id: 'message-form' } do |f|
